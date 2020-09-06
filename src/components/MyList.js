@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { ListGroup, Button } from 'react-bootstrap';
-import axios from 'axios';
 import Pokemon from './Pokemon';
 import Cookies from 'universal-cookie';
 
@@ -13,29 +12,35 @@ export default class MyList extends Component {
         results: null
     };
 
-    async componentDidMount() {
-        this.setState({ currentList: cookies.get('myPokemonList') });
-        console.log(this.state.currentList);
-        
-    }
+
     
     render() {        
         return (
             <div>
                 <p>
                 <Button variant="primary" onClick={() => {
-                    cookies.set('myPokemonList', '', {path : '/'});
+                    cookies.set('myPokemonList', []);
                     }
                 } >Clear List</Button>{' '}
-                </p>
-                {this.state.currentList ?
-                <ListGroup>  {this.state.currentList.split(',').map( e =>
-                <ListGroup.Item>
-                    <Pokemon key={e.name} name={e.name} url={e.url} />
-                    </ListGroup.Item>
-                )}
+                </p>                
+                 <ListGroup>  {cookies.get('myPokemonList').map(e =>
+                        <ListGroup.Item key={e}>
+                            <Pokemon 
+                            key={e}
+                            number={e} />
+
+                            <Button variant="danger" onClick={() => {
+                                var currentCookie = cookies.get('myPokemonList');
+                                currentCookie.splice(currentCookie.indexOf(e),1);
+                                cookies.set('myPokemonList', currentCookie);
+                                this.setState({currentList : currentCookie});
+                            }} 
+                            >Remove From List</Button>{' '}
+
+                        </ListGroup.Item>
+                    )} 
                 </ListGroup>
-                    : <p> </p>}
+                    
             </div>
         );
     }

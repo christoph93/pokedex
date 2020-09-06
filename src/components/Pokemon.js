@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Image } from 'react-bootstrap'
-import Cookies from 'universal-cookie';
-
+import { Image } from 'react-bootstrap'
 const baseImgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
 
-const cookies = new Cookies();
 
 export default class Pokemon extends Component {
     state = {
@@ -17,8 +14,9 @@ export default class Pokemon extends Component {
     componentDidMount() {
         const name = this.props.name;
         const url = this.props.url;
+        const number = this.props.number;
 
-        this.setState({ name: name });
+        this.setState({ name: name, number: number, url: url});
 
         const match = /pokemon\//.exec(url);
         if (match) {

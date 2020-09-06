@@ -14,44 +14,47 @@ export default class List extends Component {
         results: null
     };
 
+    //pull pokemon list from api
     async componentDidMount() {
         const res = await axios.get(url);
         this.setState({ results: res.data['results'] });
     }
 
-
+    //extract pokemon number from the URL
+    getNumberFromUrl(url){        
+        const match = /pokemon\//.exec(url);
+        if (match) {            
+            return url.substring(match.index + 8, url.lenght).replace('/', '');            
+        }
+        
+    }
 
     render() {
+        //set cookies to hold the pokemon list
+        if(!cookies.get('myPokemonList')){
+            cookies.set('myPokemonList', [], {path:'/'});
+        }
         return (
             <div>
                 {this.state.results ?
                     <ListGroup>  {this.state.results.map(e =>
-                        <ListGroup.Item>
+                        <ListGroup.Item key={e.name}>
+                            <Pokemon                             
+                            name={e.name} 
+                            url={e.url}
+                            number={this.getNumberFromUrl(e.url)} />
 
-
-
-                            <Pokemon key={e.name} name={e.name} url={e.url}
-                                number={() => {
-                                    let match = /pokemon\//.exec(e.url);
-                                    if (match) {
-                                        this.setState({ number: url.substring(match.index + 8, url.lenght).replace('/', '') });
-                                        
-                                    }
-                                } />
-
+                            {/* button to add pokemon to list */}                            
                             <Button variant="primary" onClick={() => {
-                                console.log('pokemon number' + this.state.number);
-                                if (cookies.get('myPokemonList')) {
-                                    let currentList = cookies.get('myPokemonList').split(',');
-                                    if (!currentList.includes(this.state.number)) {
-                                        currentList.push(this.state.number);
-                                    }
-                                    cookies.set('myPokemonList', currentList.join(','));
-                                    console.log(cookies.get('myPokemonList'))
+                                var currentCookie = cookies.get('myPokemonList');
+                                if(!currentCookie.includes(this.getNumberFromUrl(e.url))){
+                                    currentCookie.push(this.getNumberFromUrl(e.url))
                                 } else {
-                                    console.log('no list, creating');
-                                    cookies.set('myPokemonList', this.state.number, { path: '/' });
+                                    console.log('repeated pokemon in list')
                                 }
+                                cookies.set('myPokemonList', currentCookie);
+                                console.log(cookies.get('myPokemonList'));
+
                             }} >Add to My List</Button>{' '}
 
                         </ListGroup.Item>
