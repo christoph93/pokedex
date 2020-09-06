@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import NavBar from './components/NavBar';
 import List from './components/List';
+import MyList from './components/MyList'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
     <NavBar />
     <Switch>
       <Route exact path="/list" component={List} />      
+      <Route exact path="/myList" component={MyList} />      
     </Switch>
 
     </div>

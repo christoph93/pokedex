@@ -11,12 +11,8 @@ export default class NavBar extends Component {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                         <Nav.Link href="#list">Pokemons</Nav.Link>
-                        <Nav.Link href="#mypokemons">My Pokemons</Nav.Link>
-                    </Nav>
-                    <Form inline>
-                        <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                        <Button variant="outline-success">Search</Button>
-                    </Form>
+                        <Nav.Link href="#myList">My Pokemons</Nav.Link>
+                    </Nav>               
                 </Navbar.Collapse>
             </Navbar>
         );
